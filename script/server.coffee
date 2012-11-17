@@ -20,7 +20,7 @@ print = require('sys').print
 echo  = (msg) -> print "#{msg}\n"
 
 # #####################################################################
-# Web socket ...
+# Web socket and handler ...
 
 WSS  = require("ws").Server
 wss  = new WSS { port: args.port }

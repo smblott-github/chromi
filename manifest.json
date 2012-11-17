@@ -11,6 +11,6 @@
     "<all_urls>"
   ],
 
-  "background": { "scripts": [ "chromi.js" ] }
+  "background": { "scripts": [ "extension/chromi.js" ] }
 }
 

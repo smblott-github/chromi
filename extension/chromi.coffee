@@ -7,7 +7,7 @@ config =
   port: "7441"      # For URI of server.
   path: ""          # For URI of server.
   beat:  5000       # Heartbeat frequency in milliseconds.
-                    # Also, recovery interval in event of dropped web socket.
+                    # Also, recovery interval in event of dropped socket.
 
 # #####################################################################
 # Constants and utilities.
@@ -65,17 +65,18 @@ handler = (respond, id, msg) ->
     return respond.error "call".split(/\s/).concat [method, json], id
 
 # #####################################################################
-# The web socket itself.
+# The web socket.
 
 class WebsocketWrapper
   count: 0
 
   constructor: ->
-    echo "create #{chromi} websocket"
+    echo "#{chromi} starting"
     return unless "WebSocket" of window
     return unless @sock = new WebSocket "ws://#{config.host}:#{config.port}/"
     # Initialisation.
     @sock.onopen = =>
+      echo "       connected"
       @respond = new Respond @sock
       @respond.info [ "connect" ]
       @interval = setInterval ( => @respond.info [ "heartbeat", ++@count ] ), config.beat
@@ -91,9 +92,7 @@ class WebsocketWrapper
   # Clean up and, after a brief interval, attempt to create a new socket.
   close: ->
     clearInterval @interval if @interval
-    delete @interval if @interval
-    delete @respond if @respond
-    delete @sock if @sock
+    [ "interval", "respond", "sock" ].forEach (f) -> delete @[f]
     setTimeout ( -> new WebsocketWrapper() ), config.beat
 
 # #####################################################################
