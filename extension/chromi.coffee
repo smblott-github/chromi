@@ -14,7 +14,7 @@ config =
 
 chromi   = "chromi"
 echo     = (msg) -> console.log msg
-ignoreID = [ "connect" ]
+ignoreID = "connect heartbeat done info error ?".split /\s+/
 
 # #####################################################################
 # Socket response class.
@@ -28,7 +28,7 @@ class Respond
   send: (type, msg, id) ->
     id = "?" unless id
     if @send
-      @sock.send ([ chromi, id, "#{type}" ].concat msg).map(encodeURIComponent).join " "
+      @sock.send [ chromi, id, "#{type}" ].concat(msg).map(encodeURIComponent).join " "
     else
       echo "#{me}: sending without a socket?"
 
@@ -89,7 +89,7 @@ class WebsocketWrapper
     @sock.onerror = => @sock.close()
     @sock.onclose = => @close()
 
-  # Clean up and, after a brief interval, attempt to create a new socket.
+  # Clean up and, after a brief interval, attempt to reconnect.
   close: ->
     clearInterval @interval if @interval
     [ "interval", "respond", "sock" ].forEach (f) -> delete @[f]
