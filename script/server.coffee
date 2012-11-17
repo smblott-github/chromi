@@ -26,17 +26,19 @@ WSS  = require("ws").Server
 wss  = new WSS { port: args.port }
 cxs  = []
 
-wss.on "connection", (ws) ->
-  cxs.push ws
-  ws.on "message",
-    (msg) ->
-      echo msg.split(/\s+/).map(decodeURIComponent).join " "
-      errors = []
-      cxs.map (cx,i) ->
-        try
-          cx.send msg
-        catch error
-          errors.push i
-      for i in errors.reverse()
-        cxs.splice i, 1
+handler = (msg) ->
+  echo msg.split(/\s+/).map(decodeURIComponent).join " "
+  errors = []
+  cxs.forEach (cx,i) ->
+    try
+      cx.send msg
+    catch error
+      errors.push i
+  for i in errors.reverse()
+    cxs.splice i, 1
+
+wss.on "connection",
+  (ws) ->
+    cxs.push ws
+    ws.on "message", handler
 
