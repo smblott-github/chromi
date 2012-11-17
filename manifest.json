@@ -1,0 +1,16 @@
+
+{
+  "name": "Chromi",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "An external interface to chrome.",
+
+  "permissions": [
+    "tabs",
+    "bookmarks",
+    "<all_urls>"
+  ],
+
+  "background": { "scripts": [ "chromi.js" ] }
+}
+
