@@ -12,23 +12,26 @@ config =
 # #####################################################################
 # Constants and utilities.
 
-chromi   = "chromi"
-echo     = (msg) -> console.log msg
-ignoreID = "connect heartbeat done info error ?".split /\s+/
+# Messages from client to server begin with `chromi`, those from server to client with `chromiCap`.
+chromi    = "chromi"
+chromiCap = "Chromi"
+
+echo      = (msg) -> console.log msg
+validId   = (id) -> id and /^\d+$/.test id
 
 # #####################################################################
 # Socket response class.
 
 class Respond
   constructor: (sock) -> @sock = sock
-  done: (msg, id) -> @send "done",  msg, id
-  info: (msg, id) -> @send "info",  msg, id
-  error: (msg, id) -> @send "error", msg, id
+  done: (id, msg) -> @send "done",  id, msg
+  info: (id, msg) -> @send "info",  id, msg
+  error: (id, msg) -> @send "error", id, msg
 
-  send: (type, msg, id) ->
+  send: (type, id, msg) ->
     id = "?" unless id
     if @send
-      @sock.send [ chromi, id, "#{type}" ].concat(msg).map(encodeURIComponent).join " "
+      @sock.send [ chromiCap, id, "#{type}" ].concat(msg).map(encodeURIComponent).join " "
     else
       echo "#{me}: sending without a socket?"
 
@@ -36,15 +39,16 @@ class Respond
 # Handler.
 
 handler = (respond, id, msg) ->
-  if msg.length is 0
+  echo "#{id} #{msg.length} -#{msg}-"
+  if msg.length == 0
     # Ping.
-    return respond.done [], id
+    return respond.done id, []
   if msg.length isnt 2
     # Invalid request.
-    return respond.error "invalid request:".split(/\s/).concat(msg), id
+    return respond.error id, "invalid request:".split(/\s/).concat msg
   [ method, json ] = msg
   if not method
-    return respond.error "no method:".split(/\s/).concat(msg), id
+    return respond.error id, "no method:".split(/\s/).concat msg
   # Locate function.
   prev = func = window
   for term in method.split "."
@@ -52,17 +56,19 @@ handler = (respond, id, msg) ->
     func = func?[term] if term
   # Parse JSON/argument.
   if not func
-    return respond.error "could not find function".split(/\s/).concat [method], id
+    return respond.error id, "could not find function".split(/\s/).concat [method]
   # Parse arguments.
   try
     args = JSON.parse json
   catch error
-    return respond.error "JSON parse".split(/\s/).concat [json], id
+    return respond.error id, "JSON parse".split(/\s/).concat [json]
   # Call function.
   try
-    func.apply prev, args.concat [ (stuff...) -> respond.done [ JSON.stringify stuff ], id ]
+    args.push (stuff...) -> respond.done id, [ JSON.stringify stuff ]
+    func.apply prev, args
   catch error
-    return respond.error "call".split(/\s/).concat [method, json], id
+    error = JSON.stringify error
+    return respond.error id, "call".split(/\s/).concat [method, json, error]
 
 # #####################################################################
 # The web socket.
@@ -73,20 +79,20 @@ class WebsocketWrapper
   count: 0
 
   constructor: ->
-    echo "#{chromi} starting #{++serverCount}"
+    echo "#{chromiCap} starting #{++serverCount}"
     return unless "WebSocket" of window
     return unless @sock = new WebSocket "ws://#{config.host}:#{config.port}/"
     # Initialisation.
     @sock.onopen = =>
       echo "       connected"
       @respond = new Respond @sock
-      @respond.info [ "connect" ]
-      @interval = setInterval ( => @respond.info [ "heartbeat", ++@count ] ), config.beat
+      @respond.info "?", [ "connect" ]
+      @interval = setInterval ( => @respond.info "?", [ "heartbeat", ++@count ] ), config.beat
     # Message handling.
-    @sock.onmessage = (event) ->
-      msg = event.data.split(/\s+/).map decodeURIComponent
+    @sock.onmessage = (event) =>
+      msg = event.data.split(/\s+/).filter((c) -> c).map decodeURIComponent
       [ signal, id ] = msg
-      handler @respond, id, msg.splice(2) if signal == chromi and id and not id in ignoreID
+      handler @respond, id, msg.splice(2) if signal == chromi and validId id
     # Error/close handling.
     @sock.onerror = => @sock.close()
     @sock.onclose = => @close()
