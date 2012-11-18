@@ -39,7 +39,7 @@ The extension calls the indicated function with the given argument and responds 
 
 That's the extent of the documentation for the moment: chromi is a work in progress.
 
-=== Example
+### Example: Client to Server
 
 Here's an example of an on-the-wire client request:
 ```
@@ -49,6 +49,9 @@ which, when URL decoded reads:
 ```
 chromi 137294406 chrome.tabs.update [86,{"selected":true}]
 ```
+The client is requesting that chrome focus tab number 86.
+
+### Example: Server to Client
 
 The corresponding response from the server is:
 ```
@@ -59,6 +62,7 @@ which, when URL decoded is:
 ```
 Chromi 137294406 done [{"active":true,"favIconUrl":"http://www.met.ie/favicon.ico","highlighted":true,"id":86,"incognito":false,"index":2,"pinned":false,"selected":true,"status":"complete","title":"Rainfall Radar - Met Éireann - The Irish Meteorological Service Online","url":"http://www.met.ie/latest/rainfall_radar-old.asp","windowId":1}]
 ```
+which is the output passed to the callback from `chrome.tabs.update`.  Here, it's essentially a snapshot of the tab's status.
 
 Dependencies and Installation
 -----------------------------
