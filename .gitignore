@@ -1,0 +1,6 @@
+*.un~
+*.swo
+*.swp
+*.crx
+*.js
+node_modules/*
