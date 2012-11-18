@@ -13,7 +13,8 @@ The WebSocket Server
 --------------------
 
 The websocket server is just a simple echo server.  It accepts connections (by
-default on `localhost` port `7441`).  Whenever it receives a message, it forwards it to all clients (including the original sender).
+default on `localhost` port `7441`).
+It forwards each message it receives to all clients (including to the original sender).
 
 The Chrome Extension
 --------------------
