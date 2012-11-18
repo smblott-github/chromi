@@ -66,7 +66,7 @@ The client is requesting that chrome focus tab number `86`.
 
 ### Example: Server to Client
 
-The corresponding response from the server is:
+The corresponding response from the extension is:
 ```
 Chromi 137294406 done %5B%7B%22active%22%3Atrue%2C%22favIconUrl%22%3A%22http%3A%2F%2Fwww.met.ie%2Ffavicon.ico%22%2C%22highlighted%22%3Atrue%2C%22id%22%3A86%2C%22incognito%22%3Afalse%2C%22index%22%3A2%2C%22pinned%22%3Afalse%2C%22selected%22%3Atrue%2C%22status%22%3A%22complete%22%2C%22title%22%3A%22Rainfall%20Radar%20-%20Met%20%C3%89ireann%20-%20The%20Irish%20Meteorological%20Service%20Online%22%2C%22url%22%3A%22http%3A%2F%2Fwww.met.ie%2Flatest%2Frainfall_radar-old.asp%22%2C%22windowId%22%3A1%7D%5D
 
@@ -75,8 +75,8 @@ which, when URL decoded, is:
 ```
 Chromi 137294406 done [{"active":true,"favIconUrl":"http://www.met.ie/favicon.ico","highlighted":true,"id":86,"incognito":false,"index":2,"pinned":false,"selected":true,"status":"complete","title":"Rainfall Radar - Met Éireann - The Irish Meteorological Service Online","url":"http://www.met.ie/latest/rainfall_radar-old.asp","windowId":1}]
 ```
-This is the data passed to the callback from `chrome.tabs.update`.  In this
-example, it's a snapshot of the tab's status.
+This is the data passed to the callback from `chrome.tabs.update` within the
+extension.  In this example, it's a snapshot of the tab's status.
 
 Dependencies and Installation
 -----------------------------
@@ -90,4 +90,8 @@ There are dependencies.  These include, but may not be limited to:
 
 To build chromi, run `cake build` in the project's root folder.  The extension
 can then be installed and the server run with an invocation such as `node
-script/server.js`.  The server might beneficially be run under the supervision of [daemontools](http://cr.yp.to/daemontools.html) or [supervisord](http://supervisord.org/)..
+script/server.js`.
+
+The server might beneficially be run under the supervision of
+[daemontools](http://cr.yp.to/daemontools.html),
+[supervisord](http://supervisord.org/) or the like.
