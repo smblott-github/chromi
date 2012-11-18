@@ -26,7 +26,7 @@ The extension expects text messages with four space-sparated fields on a single 
 
 The extension calls the indicated function with the given argument and responds with a message of the form:
 
-  1. the literal word `Chromi` (not the leading capital "C"),
+  1. the literal word `Chromi` (note the leading capital "C"),
   2. the identifier provided with the resquest,
   3. the literal word `done`, and
   4. a URL encoded, JSON stringified list of results from the function's invocation.
