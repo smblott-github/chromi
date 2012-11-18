@@ -16,7 +16,7 @@ or extract chrome's bookmarks or history.
 
 ### Warning
 
-chromi accepts requests (by default) on a TCP socket on `localhost`.
+chromi accepts requests on a TCP socket (by default) on `localhost`.
 Malicious software with access to that socket may gain unwanted access to
 chrome .
 
@@ -39,12 +39,13 @@ The extension expects text messages with four space-sparated fields on a single 
 
   1. the literal word `chromi`,
   2. an identifier (which must match the regexp `/\d+/`),
-  3. the path to a a Javascript function  (such as `chrome.windows.getAll`), and
-  4. a URL encoded, JSON stringified list of arguments for that function.
+  3. the path to a chrome Javascript function  (such as `chrome.windows.getAll`), and
+  4. a URL encoded, JSON stringified list of arguments.
 
-The extension calls the indicated function with the given argument and responds with a message of the form:
+The extension calls the indicated function with the given arguments and
+responds with a message of the form:
 
-  1. the literal word `Chromi` (note the leading capital "C"),
+  1. the literal word `Chromi` (note the capital "C"),
   2. the identifier provided with the resquest,
   3. the literal word `done`, and
   4. a URL encoded, JSON stringified list of results from the function's invocation.
@@ -89,4 +90,4 @@ There are dependencies.  These include, but may not be limited to:
 
 To build chromi, run `cake build` in the project's root folder.  The extension
 can then be installed and the server run with an invocation such as `node
-script/server.js`.
+script/server.js`.  The server might beneficially be run under the supervision of [daemontools](http://cr.yp.to/daemontools.html) or [supervisord](http://supervisord.org/)..
