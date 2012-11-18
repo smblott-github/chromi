@@ -13,7 +13,6 @@ spawn = (procName, optArray, silent=false) ->
     proc.stderr.on 'data', (data) -> process.stderr.write data
   proc
 
-# visitor will get passed the file path as a parameter
 visitDirectory = (directory, visitor) ->
   fs.readdirSync(directory).forEach (filename) ->
     filepath = path.join directory, filename

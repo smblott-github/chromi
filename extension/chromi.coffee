@@ -39,10 +39,11 @@ class Respond
 # Handler.
 
 handler = (respond, id, msg) ->
-  echo "#{id} #{msg.length} -#{msg}-"
-  if msg.length == 0
+  echo "#{id} #{msg.length} -#{msg}- #{typeof msg[0]} #{msg[0]}"
+  if msg.length == 1 # and msg[0] == "[]"
     # Ping.
-    return respond.done id, []
+    echo "Ping"
+    return respond.done id, [ JSON.stringify [ true ] ]
   if msg.length isnt 2
     # Invalid request.
     return respond.error id, "invalid request:".split(/\s/).concat msg
