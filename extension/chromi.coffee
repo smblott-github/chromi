@@ -67,11 +67,13 @@ handler = (respond, id, msg) ->
 # #####################################################################
 # The web socket.
 
+serverCount = 0
+
 class WebsocketWrapper
   count: 0
 
   constructor: ->
-    echo "#{chromi} starting"
+    echo "#{chromi} starting #{++serverCount}"
     return unless "WebSocket" of window
     return unless @sock = new WebSocket "ws://#{config.host}:#{config.port}/"
     # Initialisation.
