@@ -126,9 +126,9 @@ The server can be run with an invocation such as:
 node script/server.js
 ```
 The extension broadcasts a heartbeat every five seconds.  If everything's
-working correctly, these heartbeats (and all other messages) appear on the
+working correctly, then these heartbeats (and all other messages) appear on the
 server's standard output (URL decoded).
 
-The server might beneficially be run under the supervision of a supervisor
+The server might beneficially be run under the supervision of a supervisor daemon
 such as [daemontools](http://cr.yp.to/daemontools.html) or
 [supervisord](http://supervisord.org/).
