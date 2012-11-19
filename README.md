@@ -116,8 +116,8 @@ The extension can be installed as an unpacked extension directly from
 the project folder (see "Load unpacked extension..." on chrome's "Extensions"
 page).
 
-If the extension cannot connect to the server or if the connection fails,
-then reconnection is attempted once every five seconds.
+If the extension cannot connect to the server or if a connection fails,
+then it attempts to reconnect once every five seconds.
 
 ### Server Installation
 
@@ -125,9 +125,9 @@ The server can be run with an invocation such as:
 ```
 node script/server.js
 ```
-The extension issues a heartbeat request every five seconds.  If
-everything's working correctly, these heartbeats appear on the server's standard output
-(URL decoded).
+The extension broadcasts a heartbeat every five seconds.  If everything's
+working correctly, these heartbeats (and all other messages) appear on the
+server's standard output (URL decoded).
 
 The server might beneficially be run under the supervision of a supervisor
 such as [daemontools](http://cr.yp.to/daemontools.html) or
