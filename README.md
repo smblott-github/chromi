@@ -78,6 +78,16 @@ The client is requesting that chrome focus tab number `86`.  It may have
 learned this tab identifier through an earlier call to
 `chrome.windows.getAll`.
 
+Notice that the chrome API [update
+method](http://developer.chrome.com/extensions/tabs.html#method-update) accepts
+three arguments: `tabId`, `updateProperties` and `callback`.  In this example,
+just the first two have been provided.  The chromi extension itself provides
+the callback, and that callback arranges to broadcast the response.
+
+This is the general approach to using chromi:  the caller must provide *all*
+expected arguments up to just before the callback, and chromi
+adds the callback.
+
 ### Server to Client
 
 The corresponding response from the extension is:
@@ -89,7 +99,8 @@ which, when URL decoded, is:
 ```
 Chromi 137294406 done [{"active":true,"favIconUrl":"http://www.met.ie/favicon.ico","highlighted":true,"id":86,"incognito":false,"index":2,"pinned":false,"selected":true,"status":"complete","title":"Rainfall Radar - Met Éireann - The Irish Meteorological Service Online","url":"http://www.met.ie/latest/rainfall_radar-old.asp","windowId":1}]
 ```
-Here, the request succeeded and returned a snapshot of the tab's state.
+Here, the request succeeded and returned a snapshot of the [tab's
+state])http://developer.chrome.com/extensions/tabs.html#type-Tab).
 This is the data passed to its callback by `chrome.tabs.update` within the
 extension.
 
