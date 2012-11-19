@@ -1,7 +1,7 @@
 chromi
 ======
 
-Chromi does very little on its own.  It's more likely to be of interest as the
+Chromi does very little on its own.  It's most likely to be of interest as the
 server for [Chromix](https://github.com/smblott-github/chromix).
 
 Chromi consists of two parts:
@@ -11,14 +11,14 @@ Chromi consists of two parts:
 
 So, chromi is a chrome extension which connects to a websocket serever,
 thereby giving access to chrome's extension API from outside of chrome itself.
-It can be used, for example, to ask chrome to load or focus or reload a page,
-or extract chrome's bookmarks or history.
+It can be used, for example, to ask chrome to load, focus or reload a tab, remove tabs,
+or extract chrome's bookmarks -- all from outside of chrome itself.
 
 ### Warning
 
-chromi accepts requests on a TCP socket (by default) on `localhost`.
+The chromi server accepts requests on a TCP socket on `localhost` (by default).
 Malicious software with access to that socket may gain unwanted access to
-chrome .
+chrome.
 
 The WebSocket Server
 --------------------
@@ -47,7 +47,7 @@ responds with a message of the form:
 
   1. the literal word `Chromi` (note the capital "C"),
   2. the identifier provided with the resquest,
-  3. the literal word `done`, and
+  3. the literal word `done` (or `error`, in the event of failure), and
   4. a URL encoded, JSON stringified list of results from the function's invocation.
 
 That's the extent of the documentation for the moment: chromi is a work in progress.
@@ -78,20 +78,29 @@ Chromi 137294406 done [{"active":true,"favIconUrl":"http://www.met.ie/favicon.ic
 This is the data passed to the callback from `chrome.tabs.update` within the
 extension.  In this example, it's a snapshot of the tab's status.
 
+Who Might Want to Use Chromi?
+-----------------------------
+
+Anyone who wants scripted access to chrome's extension API from outside of chrome itself.
+
 Dependencies and Installation
 -----------------------------
 
 There are dependencies.  These include, but may not be limited to:
 
-  - Node.js
-  - Coffeescript (install with `npm`)
-  - Optimist (install with `npm`)
-  - The `ws` websocket implementation (install with `npm`)
+  - [Node.js](http://nodejs.org/)
+  - [Coffeescript](http://coffeescript.org/) (install with `npm`)
+  - [Optimist](https://github.com/substack/node-optimist) (install with `npm`)
+  - The [ws](http://einaros.github.com/ws/) websocket implementation (install with `npm`)
 
-To build chromi, run `cake build` in the project's root folder.  The extension
-can then be installed and the server run with an invocation such as `node
-script/server.js`.
+To build chromi, run `cake build` in the project's root folder.  This compiles
+the Coffeescript files to Javascript.
 
-The server might beneficially be run under the supervision of
+The extension can then be installed as an unpackaged extension directly from
+the project folder.
+
+The server can be run with an invocation such as `node script/server.js`.
+
+This might beneficially be run under the supervision of
 [daemontools](http://cr.yp.to/daemontools.html),
 [supervisord](http://supervisord.org/) or the like.
