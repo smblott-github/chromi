@@ -51,9 +51,9 @@ handler = (respond, id, msg) ->
   if not method
     return respond.error id, "no method:".split(/\s/).concat msg
   # Locate function.
-  prev = func = window
+  self = func = window
   for term in method.split "."
-    prev = func
+    self = func
     func = func?[term] if term
   # Parse JSON/argument.
   if not func
@@ -66,7 +66,7 @@ handler = (respond, id, msg) ->
   # Call function.
   try
     args.push (stuff...) -> respond.done id, [ JSON.stringify stuff ]
-    func.apply prev, args
+    func.apply self, args
   catch error
     error = JSON.stringify error
     return respond.error id, "call".split(/\s/).concat [method, json, error]
