@@ -4,31 +4,41 @@ chromi
 Chromi does very little on its own.  It's most likely to be of interest as the
 server for [Chromix](https://github.com/smblott-github/chromix).
 
-Chromi consists of two parts:
+Who Might Want to Use Chromi?
+-----------------------------
 
-  1. a simple websocket server, and
-  2. an associated chrome extension.
+Anyone who wants scripted access to chrome's extension API from outside of
+chrome itself.
 
-So, chromi is a chrome extension which connects to a websocket serever,
-thereby giving access to chrome's extension API from outside of chrome itself.
 It can be used, for example, to ask chrome to load, focus or reload a tab, remove tabs,
 or extract chrome's bookmarks -- all from outside of chrome itself.
 
-### Warning
+### Note ...
+
+Chromi does not include a client.  The chromi client is available as a separate
+project -- [Chromix](https://github.com/smblott-github/chromix).
+
+### Warning ...
 
 The chromi server accepts requests on a TCP socket on `localhost` (by default).
 Malicious software with access to that socket may gain unwanted access to
 chrome.
 
-The WebSocket Server
---------------------
+Details
+-------
+
+Chromi consists of two parts:
+
+  1. a simple websocket server, and
+  2. an associated chrome extension.
+
+### The WebSocket Server
 
 The websocket server is just a simple echo server.  It accepts connections, by
 default on `localhost` port `7441`.  It then forwards each message it receives to
 all clients (including to the original sender).
 
-The Chrome Extension
---------------------
+### The Chrome Extension
 
 The chrome extension connects to the server.  When it receives a
 suitablly-formatted message, it executes the requested chrome API function and
@@ -52,7 +62,10 @@ responds with a message of the form:
 
 That's the extent of the documentation for the moment: chromi is a work in progress.
 
-### Example: Client to Server
+Examples
+--------
+
+### Client to Server
 
 Here's an example of an on-the-wire client request:
 ```
@@ -64,7 +77,7 @@ chromi 137294406 chrome.tabs.update [86,{"selected":true}]
 ```
 The client is requesting that chrome focus tab number `86`.
 
-### Example: Server to Client
+### Server to Client
 
 The corresponding response from the extension is:
 ```
@@ -77,11 +90,6 @@ Chromi 137294406 done [{"active":true,"favIconUrl":"http://www.met.ie/favicon.ic
 ```
 This is the data passed to the callback from `chrome.tabs.update` within the
 extension.  In this example, it's a snapshot of the tab's status.
-
-Who Might Want to Use Chromi?
------------------------------
-
-Anyone who wants scripted access to chrome's extension API from outside of chrome itself.
 
 Dependencies and Installation
 -----------------------------
@@ -99,8 +107,10 @@ the Coffeescript files to Javascript.
 The extension can then be installed as an unpackaged extension directly from
 the project folder.
 
-The server can be run with an invocation such as `node script/server.js`.
+The server can be run with an invocation such as `node script/server.js`.  The
+extension issues a heartbeat request every five seconds and, if everything's
+working correctly, this appears on the server's standard output (URL decoded).
 
-This might beneficially be run under the supervision of
+The server might beneficially be run under the supervision of
 [daemontools](http://cr.yp.to/daemontools.html),
 [supervisord](http://supervisord.org/) or the like.

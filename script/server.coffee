@@ -27,7 +27,6 @@ wss  = new WSS { port: args.port }
 cxs  = []
 
 handler = (msg) ->
-  echo msg
   echo msg.split(/\s+/).map(decodeURIComponent).join " "
   errors = []
   cxs.forEach (cx,i) ->
