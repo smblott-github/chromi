@@ -46,7 +46,7 @@ client).
 The extension expects text messages with four space-sparated fields on a single line:
 
   1. the literal word `chromi`,
-  2. an identifier (which must match the regexp `/\d+/`),
+  2. an identifier (which must match the regexp `/^\d+$/`),
   3. the path to a chrome Javascript function  (such as `chrome.windows.getAll`), and
   4. a URL encoded, JSON stringified list of arguments.
 
