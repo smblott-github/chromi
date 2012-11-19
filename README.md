@@ -132,15 +132,6 @@ the Coffeescript source to Javascript.
 on how the install is handled, you may have to search out where `npm` has
 installed it.
 
-### Extension Installation
-
-The extension can be installed as an unpacked extension directly from
-the project folder (see "Load unpacked extension..." on chrome's "Extensions"
-page).
-
-If a connection to the server cannot be established or if a connection fails,
-then the extension attempts to reconnect once every five seconds.
-
 ### Server Installation
 
 The server can be run with an invocation such as:
@@ -154,3 +145,13 @@ server's standard output (URI decoded).
 The server might beneficially be run under the control of a supervisor daemon
 such as [daemontools](http://cr.yp.to/daemontools.html) or
 [supervisord](http://supervisord.org/).
+
+### Extension Installation
+
+The extension can be installed as an unpacked extension directly from
+the project folder (see "Load unpacked extension..." on chrome's "Extensions"
+page).
+
+If a connection to the server cannot be established or if a connection fails,
+then the extension attempts to reconnect once every five seconds.
+
