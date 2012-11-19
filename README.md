@@ -1,7 +1,9 @@
 chromi
 ======
 
-Chromi does very little on its own.  It's most likely to be of interest as the
+Chromi is a simple websocket server and a chrome extension.  Chromi does not
+include a client, so it does very little on its own.
+It's most likely to be of interest as the
 server for [Chromix](https://github.com/smblott-github/chromix).
 
 Who Might Want to Use Chromi?
@@ -14,16 +16,11 @@ chrome itself.
 For example, chromi can be used to ask chrome to load, focus or reload a tab, remove tabs,
 or extract chrome's bookmarks -- all from outside of chrome itself.
 
-### Note ...
-
-Chromi does not include a client.  The chromi client is available as a separate
-project -- [Chromix](https://github.com/smblott-github/chromix).
-
-### Warning ...
+### Security Warning ...
 
 The chromi server accepts requests on a TCP socket on `localhost` (by default).
 Malicious software with access to that socket may gain unwanted access to
-chrome's internal APIs.
+chrome's extension APIs.
 
 Details
 -------
@@ -36,8 +33,8 @@ Chromi consists of two parts:
 ### The WebSocket Server
 
 The websocket server is just a simple echo server.  It accepts connections, by
-default on `localhost` port `7441`.  It then forwards each message it receives to
-all clients (including to the original sender).
+default on `localhost` port `7441`.  It forwards each message it receives to
+*all* clients (including to the original sender).
 
 ### The Chrome Extension
 
@@ -61,7 +58,8 @@ responds with a message of the form:
   3. the literal word `done` (or `error`, in the event of failure), and
   4. a URL encoded, JSON stringified list of results from the function's invocation.
 
-That's the extent of the documentation for the moment: chromi is a work in progress.
+Chromi is a work in progress.
+So that's the extent of the documentation for the moment. Except for the folowing examples, ...
 
 Examples
 --------
@@ -91,8 +89,9 @@ which, when URL decoded, is:
 ```
 Chromi 137294406 done [{"active":true,"favIconUrl":"http://www.met.ie/favicon.ico","highlighted":true,"id":86,"incognito":false,"index":2,"pinned":false,"selected":true,"status":"complete","title":"Rainfall Radar - Met Éireann - The Irish Meteorological Service Online","url":"http://www.met.ie/latest/rainfall_radar-old.asp","windowId":1}]
 ```
+Here, the request succeeded and returned a snapshot of the tab's state.
 This is the data passed to its callback by `chrome.tabs.update` within the
-extension.  In this example, it's a snapshot of the tab's state.
+extension.
 
 Dependencies
 ------------
@@ -116,8 +115,8 @@ The extension can be installed as an unpacked extension directly from
 the project folder (see "Load unpacked extension..." on chrome's "Extensions"
 page).
 
-If the extension cannot connect to the server or if a connection fails,
-then it attempts to reconnect once every five seconds.
+If a connection to the server cannot be established or if a connection fails,
+then the extension attempts to reconnect once every five seconds.
 
 ### Server Installation
 
@@ -129,6 +128,6 @@ The extension broadcasts a heartbeat every five seconds.  If everything's
 working correctly, then these heartbeats (and all other messages) appear on the
 server's standard output (URL decoded).
 
-The server might beneficially be run under the supervision of a supervisor daemon
+The server might beneficially be run under the control of a supervisor daemon
 such as [daemontools](http://cr.yp.to/daemontools.html) or
 [supervisord](http://supervisord.org/).
