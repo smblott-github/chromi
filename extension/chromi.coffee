@@ -17,7 +17,8 @@ chromi    = "chromi"
 chromiCap = "Chromi"
 
 echo      = (msg) -> console.log msg
-validId   = (id) -> id and /^\d+$/.test id
+idRegExp  = new RegExp "^\\d+$"
+validId   = (id) -> id and idRegExp.test id
 
 # #####################################################################
 # Socket response class.
@@ -39,10 +40,8 @@ class Respond
 # Handler.
 
 handler = (respond, id, msg) ->
-  echo "#{id} #{msg.length} -#{msg}- #{typeof msg[0]} #{msg[0]}"
   if msg.length == 1 # and msg[0] == "[]"
     # Ping.
-    echo "Ping"
     return respond.done id, [ JSON.stringify [ true ] ]
   if msg.length isnt 2
     # Invalid request.
@@ -51,21 +50,24 @@ handler = (respond, id, msg) ->
   if not method
     return respond.error id, "no method:".split(/\s/).concat msg
   # Locate function.
+  # Follow path from `window`.
   self = func = window
   for term in method.split "."
     self = func
     func = func?[term] if term
-  # Parse JSON/argument.
+  # Do we have a function?
   if not func
     return respond.error id, "could not find function".split(/\s/).concat [method]
-  # Parse arguments.
+  # Parse JSON/argument.
   try
     args = JSON.parse json
   catch error
     return respond.error id, "JSON parse".split(/\s/).concat [json]
   # Call function.
   try
+    # Add callback.
     args.push (stuff...) -> respond.done id, [ JSON.stringify stuff ]
+    # Call function.
     func.apply self, args
   catch error
     error = JSON.stringify error
@@ -87,13 +89,13 @@ class WebsocketWrapper
     @sock.onopen = =>
       echo "       connected"
       @respond = new Respond @sock
-      @respond.info "?", [ "connect" ]
-      @interval = setInterval ( => @respond.info "?", [ "heartbeat", ++@count ] ), config.beat
+      @respond.info "", [ "connect" ]
+      @interval = setInterval ( => @respond.info "", [ "heartbeat", ++@count ] ), config.beat
     # Message handling.
     @sock.onmessage = (event) =>
       msg = event.data.split(/\s+/).filter((c) -> c).map decodeURIComponent
-      [ signal, id ] = msg
-      handler @respond, id, msg.splice(2) if signal == chromi and validId id
+      [ signal, id ] = msg.splice(0,2)
+      return handler @respond, id, msg if signal == chromi and validId id
     # Error/close handling.
     @sock.onerror = => @sock.close()
     @sock.onclose = => @close()
