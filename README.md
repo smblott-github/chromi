@@ -7,10 +7,11 @@ server for [Chromix](https://github.com/smblott-github/chromix).
 Who Might Want to Use Chromi?
 -----------------------------
 
-Anyone who wants scripted access to chrome's extension API from outside of
+Anyone who wants scripted access to [chrome's extension
+API](http://developer.chrome.com/extensions/api_index.html) from outside of
 chrome itself.
 
-It can be used, for example, to ask chrome to load, focus or reload a tab, remove tabs,
+Chromi can be used, for example, to ask chrome to load, focus or reload a tab, remove tabs,
 or extract chrome's bookmarks -- all from outside of chrome itself.
 
 ### Note ...
@@ -91,21 +92,32 @@ Chromi 137294406 done [{"active":true,"favIconUrl":"http://www.met.ie/favicon.ic
 This is the data passed to the callback from `chrome.tabs.update` within the
 extension.  In this example, it's a snapshot of the tab's status.
 
-Dependencies and Installation
------------------------------
+Dependencies
+------------
 
-There are dependencies.  These include, but may not be limited to:
+Dependencies include, but may not be limited to:
 
   - [Node.js](http://nodejs.org/)
   - [Coffeescript](http://coffeescript.org/) (install with `npm`)
   - [Optimist](https://github.com/substack/node-optimist) (install with `npm`)
   - The [ws](http://einaros.github.com/ws/) websocket implementation (install with `npm`)
 
+Installation
+------------
+
 To build chromi, run `cake build` in the project's root folder.  This compiles
 the Coffeescript files to Javascript.
 
+### Extension Installation
+
 The extension can then be installed as an unpackaged extension directly from
-the project folder.
+the project folder (see "Load unpacked extension..." on chrome's "Extensions"
+page).
+
+If the extension cannot contact the server or if the connection fails,
+then a reconnect is attempted once every five seconds.
+
+### Server Installation
 
 The server can be run with an invocation such as `node script/server.js`.  The
 extension issues a heartbeat request every five seconds and, if everything's
