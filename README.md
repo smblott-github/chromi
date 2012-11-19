@@ -128,6 +128,10 @@ Installation
 To build chromi, run `cake build` in the project's root folder.  This compiles
 the Coffeescript source to Javascript.
 
+`cake` is installed by npm as part of the `coffee-script` package.  Depending
+on how the install is handled, you may have to search out where `npm` has
+installed it.
+
 ### Extension Installation
 
 The extension can be installed as an unpacked extension directly from
