@@ -9,17 +9,17 @@ server for [Chromix](https://github.com/smblott-github/chromix).
 Who Might Want to Use Chromi?
 -----------------------------
 
-Anyone who wants scripted access to [chrome's extension
+...anyone who wants scripted access to [chrome's extension
 API](http://developer.chrome.com/extensions/api_index.html) from outside of
 chrome itself.
 
-For example, chromi can be used to ask chrome to load, focus or reload a tab, remove tabs,
+For example, chromi can ask chrome to load, focus or reload a tab, remove tabs,
 or extract chrome's bookmarks -- all from outside of chrome itself.
 
 ### Security Warning ...
 
 The chromi server accepts requests on a TCP socket on `localhost` (by default).
-Malicious software with access to that socket may gain unwanted access to
+Malicious software with access to that socket may gain unintended access to
 chrome's extension APIs.
 
 Details
@@ -32,8 +32,8 @@ Chromi consists of two parts:
 
 ### The WebSocket Server
 
-The websocket server is just a simple echo server.  It accepts connections, by
-default on `localhost` port `7441`.  It forwards each message it receives to
+The websocket server is just a simple echo server.  It accepts connections
+on `localhost` port `7441`.  It then forwards each message it receives to
 *all* clients (including to the original sender).
 
 ### The Chrome Extension
@@ -75,17 +75,17 @@ which, when URL decoded, reads:
 chromi 137294406 chrome.tabs.update [86,{"selected":true}]
 ```
 The client is requesting that chrome focus tab number `86`.  It may have
-learned this tab identifier through an earlier call to
+learned this tab identifier via an earlier call to
 `chrome.windows.getAll`.
 
-Notice that the chrome API [update
+Notice that the chrome API [tab update
 method](http://developer.chrome.com/extensions/tabs.html#method-update) accepts
 three arguments: `tabId`, `updateProperties` and `callback`.  In this example,
-just the first two have been provided.  The chromi extension itself provides
+just the first two have been provided.  Chromi itself provides
 the callback, and that callback arranges to broadcast the response.
 
 This is the general approach to using chromi:  the caller must provide *all*
-expected arguments up to just before the callback, and chromi
+arguments up to *just before* the callback, and chromi
 adds the callback.
 
 ### Server to Client
@@ -100,7 +100,7 @@ which, when URL decoded, is:
 Chromi 137294406 done [{"active":true,"favIconUrl":"http://www.met.ie/favicon.ico","highlighted":true,"id":86,"incognito":false,"index":2,"pinned":false,"selected":true,"status":"complete","title":"Rainfall Radar - Met Éireann - The Irish Meteorological Service Online","url":"http://www.met.ie/latest/rainfall_radar-old.asp","windowId":1}]
 ```
 Here, the request succeeded and returned a snapshot of the [tab's
-state])http://developer.chrome.com/extensions/tabs.html#type-Tab).
+state](http://developer.chrome.com/extensions/tabs.html#type-Tab).
 This is the data passed to its callback by `chrome.tabs.update` within the
 extension.
 
