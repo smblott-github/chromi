@@ -76,7 +76,9 @@ which, when URL decoded, reads:
 ```
 chromi 137294406 chrome.tabs.update [86,{"selected":true}]
 ```
-The client is requesting that chrome focus tab number `86`.
+The client is requesting that chrome focus tab number `86`.  It may have
+learned this tab identifier through an earlier call to
+`chrome.windows.getAll`.
 
 ### Server to Client
 
@@ -90,14 +92,14 @@ which, when URL decoded, is:
 Chromi 137294406 done [{"active":true,"favIconUrl":"http://www.met.ie/favicon.ico","highlighted":true,"id":86,"incognito":false,"index":2,"pinned":false,"selected":true,"status":"complete","title":"Rainfall Radar - Met Éireann - The Irish Meteorological Service Online","url":"http://www.met.ie/latest/rainfall_radar-old.asp","windowId":1}]
 ```
 This is the data passed to the callback from `chrome.tabs.update` within the
-extension.  In this example, it's a snapshot of the tab's status.
+extension.  In this example, it's a snapshot of the tab's state.
 
 Dependencies
 ------------
 
 Dependencies include, but may not be limited to:
 
-  - [Node.js](http://nodejs.org/)
+  - [Node.js](http://nodejs.org/) (install with your favourite package manager)
   - [Coffeescript](http://coffeescript.org/) (install with `npm`)
   - [Optimist](https://github.com/substack/node-optimist) (install with `npm`)
   - The [ws](http://einaros.github.com/ws/) websocket implementation (install with `npm`)
@@ -110,7 +112,7 @@ the Coffeescript files to Javascript.
 
 ### Extension Installation
 
-The extension can then be installed as an unpackaged extension directly from
+The extension can be installed as an unpackaged extension directly from
 the project folder (see "Load unpacked extension..." on chrome's "Extensions"
 page).
 
@@ -119,9 +121,13 @@ then a reconnect is attempted once every five seconds.
 
 ### Server Installation
 
-The server can be run with an invocation such as `node script/server.js`.  The
-extension issues a heartbeat request every five seconds and, if everything's
-working correctly, this appears on the server's standard output (URL decoded).
+The server can be run with an invocation such as:
+```
+node script/server.js
+```
+The extension issues a heartbeat request every five seconds.  If
+everything's working correctly, these heartbeats appear on the server's standard output
+(URL decoded).
 
 The server might beneficially be run under the supervision of
 [daemontools](http://cr.yp.to/daemontools.html),
