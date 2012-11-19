@@ -109,10 +109,17 @@ Dependencies
 
 Dependencies include, but may not be limited to:
 
-  - [Node.js](http://nodejs.org/) (install with your favourite package manager)
-  - [Coffeescript](http://coffeescript.org/) (install with `npm`)
-  - [Optimist](https://github.com/substack/node-optimist) (install with `npm`)
-  - The [ws](http://einaros.github.com/ws/) websocket implementation (install with `npm`)
+  - [Node.js](http://nodejs.org/)
+  
+    (Install with your favourite package manager, perhaps something like `sudo apt-get install node`).
+  - [Coffeescript](http://coffeescript.org/)
+  
+    (Install with `npm install coffee-script`).
+  - [Optimist](https://github.com/substack/node-optimist)
+
+    (Install with `npm install optimist`).
+  - The [ws](http://einaros.github.com/ws/) websocket implementation
+    (Install with `npm install ws`).
 
 Installation
 ------------
