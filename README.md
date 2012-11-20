@@ -18,7 +18,7 @@ or extract chrome's bookmarks -- all from outside of chrome itself.
 
 ### Security Warning ...
 
-The chromi server accepts requests on a TCP socket on `localhost` (by default).
+The chromi server accepts requests on a TCP socket on `localhost`.
 Malicious software with access to that socket may gain unintended access to
 chrome's extension APIs.
 
@@ -43,7 +43,7 @@ suitablly-formatted message, it executes the requested chrome API function and
 bounces the responce back to the server (and hence also to the original
 client).
 
-The extension expects text messages with four space-sparated fields on a single line:
+The extension expects text messages with four space-sparated fields:
 
   1. the literal word `chromi`,
   2. an identifier (which must match the regexp `/^\d+$/`),
@@ -53,8 +53,8 @@ The extension expects text messages with four space-sparated fields on a single 
 The extension calls the indicated function with the given arguments and
 responds with a message of the form:
 
-  1. the literal word `Chromi` (note the capital "C"),
-  2. the identifier provided with the resquest,
+  1. the literal word `Chromi` (note the capital "C", this time),
+  2. the identifier provided with the original resquest,
   3. the literal word `done` (or `error`, in the event of failure), and
   4. a URI encoded, JSON stringified list of results from the function's invocation.
 
@@ -114,13 +114,13 @@ Dependencies include, but may not be limited to:
     (Install with your favourite package manager, perhaps something like `sudo apt-get install node`.)
   - [Coffeescript](http://coffeescript.org/)
   
-    (Install with `npm install coffee-script`).
+    (Install with something like `npm install coffee-script`.)
   - [Optimist](https://github.com/substack/node-optimis.)
 
-    (Install with `npm install optimist`.)
+    (Install with something like `npm install optimist`.)
   - The [ws](http://einaros.github.com/ws/) websocket implementation
 
-    (Install with `npm install ws`.)
+    (Install with something like `npm install ws`.)
 
 Installation
 ------------
@@ -128,9 +128,9 @@ Installation
 To build chromi, run `cake build` in the project's root folder.  This compiles
 the Coffeescript source to Javascript.
 
-`cake` is installed by npm as part of the `coffee-script` package.  Depending
+`cake` is installed by `npm` as part of the `coffee-script` package.  Depending
 on how the install is handled, you may have to search out where `npm` has
-installed it.
+installed `cake`.
 
 ### Server Installation
 
@@ -150,7 +150,7 @@ such as [daemontools](http://cr.yp.to/daemontools.html) or
 
 The extension can be installed as an unpacked extension directly from
 the project folder (see "Load unpacked extension..." on chrome's "Extensions"
-page).
+page).  It may be necessay to enable "Developer mode".
 
 If a connection to the server cannot be established or if a connection fails,
 then the extension attempts to reconnect once every five seconds.
