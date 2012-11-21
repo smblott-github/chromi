@@ -44,14 +44,14 @@ Details
 
 ### Approach
 
-The Chrome security model places limits on how extensions interact with
+The Chrome security model limits on how extensions interact with
 the host operating system, and *vice versa*.  This makes it difficult to
 control Chrome from the command line or via scripts.
 
 Chromi overcomes these limitations through the use of web sockets.
 Chromi uses the following architecture:
 
-  - Client `<-->` Server (`ws://localhost:7441`) `<-->` Chromi/Chrome
+  - Client `<-->` Server (`ws://localhost:7441`) `<-->` Chromi (within Chrome)
 
     (where `<-->` indicates a web socket connection).
 
@@ -147,8 +147,8 @@ The dependencies for building Chromi include, but may not be limited to:
   
     (Install with something like `npm install coffee-script`.)
 
-To build Chromi, run `cake build` in the project's root folder.  This compiles
-the CoffeeScript source to JavaScript.
+Run `cake build` in the project's root folder.  This compiles the CoffeeScript
+source to JavaScript.
 
 `cake` is installed by `npm` as part of the `coffee-script` package.  Depending
 on how the install is handled, you may have to search for where `npm` has
@@ -160,3 +160,10 @@ Notes
 If it cannot connection to the server or if a connection fails, then Chromi
 attempts to reconnect once every five seconds.
 
+### TODO:
+
+  1. Allow the TCP port number to be configured via an options page.
+
+  2. Is there a reasonable approach to securing communications?
+
+  3. Support callbacks on Chrome events.
