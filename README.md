@@ -155,7 +155,7 @@ installed `cake`.
 Notes
 -----
 
-If it cannot connection to the server or if a connection fails, then Chromi
+If it cannot connect to the server or if a connection fails, then Chromi
 attempts to reconnect once every five seconds.
 
 ### TODO:
