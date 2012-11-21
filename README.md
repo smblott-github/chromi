@@ -6,6 +6,13 @@ include a server or a client, so it does very little on its own.
 It's most likely to be of interest as the
 server for [Chromix](https://github.com/smblott-github/chromix).
 
+Communication is as follows:
+
+  - Chromix client <--> Chromix server <--> Chromi extension
+
+    Only the Chromi extension is included here.  The client and server are
+    available from the Chromix project (see link above).
+
 Who Might Want to Use Chromi?
 -----------------------------
 
@@ -26,8 +33,6 @@ chrome's extension APIs.
 
 The chromi extension is now available on the [Chrome Web
 Store](https://chrome.google.com/webstore/detail/chromi/eeaebnaemaijhbdpnmfbdboenoomadbo).
-
-(But please read on.  There's more to chromi than simply installing an extension.)
 
 Details
 -------
