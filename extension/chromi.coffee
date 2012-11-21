@@ -103,11 +103,11 @@ class WebsocketWrapper
   # Clean up and, after a brief interval, attempt to reconnect.
   close: ->
     clearInterval @interval if @interval
-    [ "interval", "respond", "sock" ].forEach (f) -> delete @[f]
-    setTimeout ( -> new WebsocketWrapper() ), config.beat
+    [ "interval", "respond", "sock" ].forEach (f) => delete @[f]
+    setTimeout ( -> ws = new WebsocketWrapper() ), config.beat
 
 # #####################################################################
 # Start ...
 
-new WebsocketWrapper()
+ws = new WebsocketWrapper()
 
