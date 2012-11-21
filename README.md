@@ -1,8 +1,8 @@
 chromi
 ======
 
-Chromi is a simple websocket server and a chrome extension.  Chromi does not
-include a client, so it does very little on its own.
+Chromi is a simple chrome extension.  Chromi does not
+include a server or a client, so it does very little on its own.
 It's most likely to be of interest as the
 server for [Chromix](https://github.com/smblott-github/chromix).
 
@@ -31,19 +31,6 @@ Store](https://chrome.google.com/webstore/detail/chromi/eeaebnaemaijhbdpnmfbdboe
 
 Details
 -------
-
-Chromi consists of two parts:
-
-  1. a simple websocket server, and
-  2. an associated chrome extension.
-
-### The WebSocket Server
-
-The websocket server is just a simple echo server.  It accepts connections
-on `localhost` port `7441`.  It then forwards each message it receives to
-*all* clients (including to the original sender).
-
-### The Chrome Extension
 
 The chrome extension connects to the server.  When it receives a
 suitablly-formatted message, it executes the requested chrome API function and
@@ -114,7 +101,8 @@ extension.
 Dependencies
 ------------
 
-Dependencies include, but may not be limited to:
+To build the chromi extension locally, the
+dependencies include, but may not be limited to:
 
   - [Node.js](http://nodejs.org/)
   
@@ -122,38 +110,9 @@ Dependencies include, but may not be limited to:
   - [Coffeescript](http://coffeescript.org/)
   
     (Install with something like `npm install coffee-script`.)
-  - [Optimist](https://github.com/substack/node-optimis.)
-
-    (Install with something like `npm install optimist`.)
-  - The [ws](http://einaros.github.com/ws/) websocket implementation
-
-    (Install with something like `npm install ws`.)
 
 Installation
 ------------
-
-To build chromi, run `cake build` in the project's root folder.  This compiles
-the Coffeescript source to Javascript.
-
-`cake` is installed by `npm` as part of the `coffee-script` package.  Depending
-on how the install is handled, you may have to search out where `npm` has
-installed `cake`.
-
-### Server Installation
-
-The server can be run with an invocation such as:
-```
-node script/server.js
-```
-The extension broadcasts a heartbeat every five seconds.  If everything's
-working correctly, then these heartbeats (and all other messages) appear on the
-server's standard output (URI decoded).
-
-The server might beneficially be run under the control of a supervisor daemon
-such as [daemontools](http://cr.yp.to/daemontools.html) or
-[supervisord](http://supervisord.org/).
-
-### Extension Installation
 
 The chromi extension is available on the [Chrome Web
 Store](https://chrome.google.com/webstore/detail/chromi/eeaebnaemaijhbdpnmfbdboenoomadbo).
@@ -161,6 +120,13 @@ Store](https://chrome.google.com/webstore/detail/chromi/eeaebnaemaijhbdpnmfbdboe
 Alternatively, the extension can be installed as an unpacked extension directly from
 the project folder (see "Load unpacked extension..." on chrome's "Extensions"
 page).  It may be necessary to enable "Developer mode".
+
+To build chromi, run `cake build` in the project's root folder.  This compiles
+the Coffeescript source to Javascript.
+
+`cake` is installed by `npm` as part of the `coffee-script` package.  Depending
+on how the install is handled, you may have to search out where `npm` has
+installed `cake`.
 
 If a connection to the server cannot be established or if a connection fails,
 then the extension attempts to reconnect once every five seconds.
