@@ -51,8 +51,7 @@ control Chrome from the command line or via scripts.
 Chromi overcomes these limitations through the use of web sockets.
 Chromi uses the following architecture:
 
-  - Client `<-->` Server (`ws://localhost:7441`) `<-->` Chromi (within Chrome)
-
+  - Client `<-->` Server (`ws://localhost:7441`) `<-->` Chromi (within Chrome)  
     (where `<-->` indicates a web socket connection).
 
 The Chromi extension connects to a web socket server on `localhost:7441`.  Clients
