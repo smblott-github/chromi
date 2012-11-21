@@ -43,12 +43,12 @@ Details
 
 ### Approach
 
-The Chrome security model limits on how extensions interact with
+The Chrome security model limits how extensions interact with
 the host operating system, and *vice versa*.  This makes it difficult to
 control Chrome from the command line or via scripts.
 
-Chromi overcomes these limitations through the use of web sockets.
-Chromi uses the following architecture:
+Chromi overcomes these limitations through the use of a web socket.
+Specifically, Chromi uses the following architecture:
 
   - Client `<-->` Server (`ws://localhost:7441`) `<-->` Chromi (within Chrome)  
     (where `<-->` indicates a web socket connection).
