@@ -132,9 +132,11 @@ Dependencies and Installation
 The Chromi extension is available on the [Chrome Web
 Store](https://chrome.google.com/webstore/detail/chromi/eeaebnaemaijhbdpnmfbdboenoomadbo).
 
-Alternatively, the extension can be installed as an unpacked extension directly from
-the project folder (see "Load unpacked extension..." on Chrome's "Extensions"
-page).  It may be necessary to enable "Developer mode" in Chrome.
+Alternatively, the extension can be
+[downloaded](https://github.com/smblott-github/chromi/downloads) and installed
+as an unpacked extension directly from the project folder (see "Load unpacked
+extension..." on Chrome's "Extensions" page).  It may be necessary to enable
+"Developer mode" in Chrome.
 
 The dependencies for building Chromi include, but may not be limited to:
 
