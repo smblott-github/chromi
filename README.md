@@ -22,6 +22,13 @@ The chromi server accepts requests on a TCP socket on `localhost`.
 Malicious software with access to that socket may gain unintended access to
 chrome's extension APIs.
 
+### New! (21/11/2012)
+
+The chromi extension is now available on the [Chrome Web
+Store](https://chrome.google.com/webstore/detail/chromi/eeaebnaemaijhbdpnmfbdboenoomadbo).
+
+(But please read on.  There's more to chromi than simply installing an extension.)
+
 Details
 -------
 
@@ -148,9 +155,12 @@ such as [daemontools](http://cr.yp.to/daemontools.html) or
 
 ### Extension Installation
 
-The extension can be installed as an unpacked extension directly from
+The chromi extension is available on the [Chrome Web
+Store](https://chrome.google.com/webstore/detail/chromi/eeaebnaemaijhbdpnmfbdboenoomadbo).
+
+Alternatively, the extension can be installed as an unpacked extension directly from
 the project folder (see "Load unpacked extension..." on chrome's "Extensions"
-page).  It may be necessay to enable "Developer mode".
+page).  It may be necessary to enable "Developer mode".
 
 If a connection to the server cannot be established or if a connection fails,
 then the extension attempts to reconnect once every five seconds.
