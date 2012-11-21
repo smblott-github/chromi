@@ -11,7 +11,8 @@ Communication is as follows:
   - Chromix client <--> Chromix server <--> Chromi extension
 
     Only the Chromi extension is included here.  The client and server are
-    available from the Chromix project (see link above).
+    available from the [Chromix
+    project](https://github.com/smblott-github/chromix).
 
 Who Might Want to Use Chromi?
 -----------------------------
