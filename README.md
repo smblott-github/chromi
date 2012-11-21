@@ -140,11 +140,10 @@ page).  It may be necessary to enable "Developer mode" in Chrome.
 
 The dependencies for building Chromi include, but may not be limited to:
 
-  - [Node.js](http://nodejs.org/)
-  
+  - [Node.js](http://nodejs.org/)  
     (Install with your favourite package manager, perhaps something like `sudo apt-get install node`.)
-  - [CoffeeScript](http://coffeescript.org/)
-  
+
+  - [CoffeeScript](http://coffeescript.org/)  
     (Install with something like `npm install coffee-script`.)
 
 Run `cake build` in the project's root folder.  This compiles the CoffeeScript
