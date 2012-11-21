@@ -55,7 +55,7 @@ Chromi uses the following architecture:
 
     (where `<-->` indicates a web socket connection).
 
-The Chromi extension connects to a web socket server on `localhost`.  Clients
+The Chromi extension connects to a web socket server on `localhost:7441`.  Clients
 connecting to that same socket can then send messages to the extension and
 receive responses.
 
@@ -103,14 +103,14 @@ The client is requesting that Chrome focus tab number `86`.  It may have
 learned this tab identifier via an earlier call to
 `chrome.windows.getAll`.
 
-Notice that the
+Notice that
 [`chrome.tabs.update`](http://developer.chrome.com/extensions/tabs.html#method-update)
 accepts three arguments: `tabId`, `updateProperties` and `callback`.  In this
 example, just the first two have been provided.  Chromi itself provides the
 callback, and that callback arranges to broadcast the response.
 
-This is the general approach to using Chromi:  the caller must provide *all*
-arguments up to *just before* the callback, and Chromi
+This is the general approach to using Chromi:  the caller *must provide all
+arguments up to just before the callback*, and Chromi
 adds the callback.
 
 #### Server to Client
@@ -126,8 +126,7 @@ Chromi 137294406 done [{"active":true,"favIconUrl":"http://www.met.ie/favicon.ic
 ```
 Here, the request succeeded and returned a snapshot of the [tab's
 state](http://developer.chrome.com/extensions/tabs.html#type-Tab).
-This is the data passed to its callback by `chrome.tabs.update` within the
-extension.
+This is the data passed by `chrome.tabs.update` to its callback.
 
 Dependencies and Installation
 -----------------------------
@@ -139,8 +138,7 @@ Alternatively, the extension can be installed as an unpacked extension directly 
 the project folder (see "Load unpacked extension..." on Chrome's "Extensions"
 page).  It may be necessary to enable "Developer mode" in Chrome.
 
-To build the Chromi extension locally, the
-dependencies include, but may not be limited to:
+The dependencies for building Chromi include, but may not be limited to:
 
   - [Node.js](http://nodejs.org/)
   
