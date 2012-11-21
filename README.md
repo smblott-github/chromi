@@ -1,18 +1,12 @@
 chromi
 ======
 
-Chromi is a simple Chrome extension.  Chromi does not
-include a server or a client, so it does very little on its own.
-It's most likely to be of interest as the
-server for [Chromix](https://github.com/smblott-github/chromix).
-
-Communication is as follows:
-
-  - Chromix client <--> Chromix server <--> Chromi extension
-
-    Only the Chromi extension is included here.  The client and server are
-    available from the [Chromix
-    project](https://github.com/smblott-github/chromix).
+Chromi is a simple Chrome extension that *enables* command-line and scripted
+control of Chrome through Chrome's [extension
+API](http://developer.chrome.com/extensions/api_index.html).  Chromi does not
+include a server or a client, so it does very little on its own.  A server and
+client are available in the
+[Chromix](https://github.com/smblott-github/chromix) project.
 
 Who Might Want to Use Chromi?
 -----------------------------
@@ -21,15 +15,24 @@ Who Might Want to Use Chromi?
 API](http://developer.chrome.com/extensions/api_index.html) from outside of
 Chrome itself.
 
-For example, with Chromi clients can ask Chrome to load, focus or reload a
+For example, via Chromi, clients can ask Chrome to load, focus or reload a
 tab, remove tabs, or extract Chrome's bookmarks -- all from outside of Chrome
 itself.
 
+Here's an example from Chromix:
+```
+node chromix.js with http://www.bbc.co.uk/news/ reload
+node chromix.js with http://www.bbc.co.uk/news/ focus
+```
+Reload the BBC News tab, and focus it.
+
+Only the Chromi extension is included here.  The client and server are
+available from the [Chromix](https://github.com/smblott-github/chromix) project.
+
 ### Security Warning ...
 
-Chromi opens a TCP socket to a server on `localhost`.
-Malicious software with access to that socket may gain unintended access to
-Chrome's extension APIs.
+Chromi opens a TCP socket to a server on `localhost`.  Malicious software with
+access to that socket may gain unintended access to Chrome's extension APIs.
 
 ### New! (21/11/2012)
 
@@ -39,10 +42,30 @@ Store](https://chrome.google.com/webstore/detail/chromi/eeaebnaemaijhbdpnmfbdboe
 Details
 -------
 
-The Chrome extension connects to the server.  When it receives a
-suitablly-formatted message, it executes the requested Chrome API function and
-bounces the responce back to the server (and hence also to the original
-client).
+### Approach
+
+The Chrome security model places limits on how extensions interact with
+the host operating system, and *vice versa*.  This makes it difficult to
+control Chrome from the command line or via scripts.
+
+Chromi overcomes (some of) these limimtations through the use of web sockets.
+Chromi uses the following architecture:
+
+  - Chromix client `<-->` Chromix server `<-->` Chromi extension
+
+The Chromi extension connects to a web socket server on `localhost`.  Clients
+connecting to that same socket can then send messages to the extension and
+receive responses.
+
+Client's have access to all of the callback-based operations exported by the
+Chrome [API](http://developer.chrome.com/extensions/api_index.html).
+Event-based callbacks are not currently supported.
+
+### Messages
+
+When the Chrome extension it receives a suitablly-formatted message, it
+executes the requested Chrome API function and bounces the responce back to the
+server (and hence also to the original client).
 
 The extension expects text messages with four space-sparated fields:
 
@@ -59,13 +82,12 @@ responds with a message of the form:
   3. the literal word `done` (or `error`, in the event of failure), and
   4. a URI encoded, JSON stringified list of results from the function's invocation.
 
-Chromi is a work in progress.
-So that's the extent of the documentation for the moment. Except for the folowing examples, ...
+Chromi is a work in progress: so that's the extent of the documentation for the
+moment. Except for the folowing examples, ...
 
-Examples
---------
+### Examples
 
-### Client to Server
+#### Client to Server
 
 Here's an example of an on-the-wire client request:
 ```
@@ -89,7 +111,7 @@ This is the general approach to using Chromi:  the caller must provide *all*
 arguments up to *just before* the callback, and Chromi
 adds the callback.
 
-### Server to Client
+#### Server to Client
 
 The corresponding response from the extension is:
 ```
@@ -126,15 +148,15 @@ dependencies include, but may not be limited to:
     (Install with something like `npm install coffee-script`.)
 
 To build Chromi, run `cake build` in the project's root folder.  This compiles
-the Coffeescript source to Javascript.
+the CoffeeScript source to Javascript.
 
 `cake` is installed by `npm` as part of the `coffee-script` package.  Depending
-on how the install is handled, you may have to search out where `npm` has
+on how the install is handled, you may have to search for where `npm` has
 installed `cake`.
 
 Notes
 -----
 
-If a connection to the server cannot be established or if a connection fails,
-then the extension attempts to reconnect once every five seconds.
+If it cannot connection to the server or if a connection fails, then Chromi
+attempts to reconnect once every five seconds.
 
