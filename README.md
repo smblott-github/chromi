@@ -163,7 +163,5 @@ attempts to reconnect once every five seconds.
 ### TODO:
 
   1. Allow the TCP port number to be configured via an options page.
-
   2. Is there a reasonable approach to securing communications?
-
   3. Support callbacks on Chrome events.
