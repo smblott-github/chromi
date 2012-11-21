@@ -11,18 +11,17 @@ client are available in the
 Who Might Want to Use Chromi?
 -----------------------------
 
-...anyone who wants scripted access to Chrome's extension
+...anyone who wants command-line or scripted access to Chrome's extension
 [API](http://developer.chrome.com/extensions/api_index.html) from outside of
 Chrome itself.
-
 For example, Chromi allows clients to ask Chrome to load, focus or reload a
 tab, remove tabs, or extract Chrome's bookmarks -- all from outside of Chrome
 itself.
 
 Here's an example from [Chromix](https://github.com/smblott-github/chromix):
 ```
-node chromix.js with http://www.bbc.co.uk/news/ reload
-node chromix.js with http://www.bbc.co.uk/news/ focus
+chromix with http://www.bbc.co.uk/news/ reload
+chromix with http://www.bbc.co.uk/news/ focus
 ```
 Reload the BBC News tab, and focus it.
 
