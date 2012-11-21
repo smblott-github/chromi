@@ -51,7 +51,9 @@ control Chrome from the command line or via scripts.
 Chromi overcomes these limitations through the use of web sockets.
 Chromi uses the following architecture:
 
-  - Chromix client `<-->` Chromix server `<-->` Chromi extension
+  - Client `<-->` Server (`ws://localhost:7441`) `<-->` Chromi/Chrome
+
+    (where `<-->` indicates a web socket connection).
 
 The Chromi extension connects to a web socket server on `localhost`.  Clients
 connecting to that same socket can then send messages to the extension and
@@ -59,15 +61,15 @@ receive responses.
 
 Client's have access to all of the callback-based operations exported by the
 Chrome [API](http://developer.chrome.com/extensions/api_index.html).
-Event-based callbacks are not currently supported.
+Event-based callbacks are *not* currently supported.
 
 ### Messages
 
-When the Chrome extension it receives a suitably-formatted message, it
+When Chromi receives a suitably-formatted message, it
 executes the requested Chrome API function and bounces the response back to the
 server (and hence also to the original client).
 
-The extension expects text messages with four space-separated fields:
+The extension accepts text messages with four space-separated fields:
 
   1. the literal word `chromi`,
   2. an identifier (which must match the regexp `/^\d+$/`),
@@ -101,11 +103,11 @@ The client is requesting that Chrome focus tab number `86`.  It may have
 learned this tab identifier via an earlier call to
 `chrome.windows.getAll`.
 
-Notice that the Chrome API [tab update
-method](http://developer.chrome.com/extensions/tabs.html#method-update) accepts
-three arguments: `tabId`, `updateProperties` and `callback`.  In this example,
-just the first two have been provided.  Chromi itself provides
-the callback, and that callback arranges to broadcast the response.
+Notice that the
+[`chrome.tabs.update`](http://developer.chrome.com/extensions/tabs.html#method-update)
+accepts three arguments: `tabId`, `updateProperties` and `callback`.  In this
+example, just the first two have been provided.  Chromi itself provides the
+callback, and that callback arranges to broadcast the response.
 
 This is the general approach to using Chromi:  the caller must provide *all*
 arguments up to *just before* the callback, and Chromi
