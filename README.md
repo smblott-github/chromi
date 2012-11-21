@@ -1,9 +1,9 @@
-chromi
+Chromi
 ======
 
-Chromi is a simple Chrome extension that *enables* command-line and scripted
-control of Chrome through Chrome's [extension
-API](http://developer.chrome.com/extensions/api_index.html).  Chromi does not
+Chromi is a Chrome extension that *facilitates* command-line and scripted
+control of Chrome through Chrome's extension
+[API](http://developer.chrome.com/extensions/api_index.html).  Chromi does not
 include a server or a client, so it does very little on its own.  A server and
 client are available in the
 [Chromix](https://github.com/smblott-github/chromix) project.
@@ -11,22 +11,22 @@ client are available in the
 Who Might Want to Use Chromi?
 -----------------------------
 
-...anyone who wants scripted access to [Chrome's extension
-API](http://developer.chrome.com/extensions/api_index.html) from outside of
+...anyone who wants scripted access to Chrome's extension
+[API](http://developer.chrome.com/extensions/api_index.html) from outside of
 Chrome itself.
 
-For example, via Chromi, clients can ask Chrome to load, focus or reload a
+For example, Chromi allows clients to ask Chrome to load, focus or reload a
 tab, remove tabs, or extract Chrome's bookmarks -- all from outside of Chrome
 itself.
 
-Here's an example from Chromix:
+Here's an example from [Chromix](https://github.com/smblott-github/chromix):
 ```
 node chromix.js with http://www.bbc.co.uk/news/ reload
 node chromix.js with http://www.bbc.co.uk/news/ focus
 ```
 Reload the BBC News tab, and focus it.
 
-Only the Chromi extension is included here.  The client and server are
+Only the Chromi extension is included in this project.  The client and server are
 available from the [Chromix](https://github.com/smblott-github/chromix) project.
 
 ### Security Warning ...
@@ -48,7 +48,7 @@ The Chrome security model places limits on how extensions interact with
 the host operating system, and *vice versa*.  This makes it difficult to
 control Chrome from the command line or via scripts.
 
-Chromi overcomes (some of) these limimtations through the use of web sockets.
+Chromi overcomes these limitations through the use of web sockets.
 Chromi uses the following architecture:
 
   - Chromix client `<-->` Chromix server `<-->` Chromi extension
@@ -63,27 +63,27 @@ Event-based callbacks are not currently supported.
 
 ### Messages
 
-When the Chrome extension it receives a suitablly-formatted message, it
-executes the requested Chrome API function and bounces the responce back to the
+When the Chrome extension it receives a suitably-formatted message, it
+executes the requested Chrome API function and bounces the response back to the
 server (and hence also to the original client).
 
-The extension expects text messages with four space-sparated fields:
+The extension expects text messages with four space-separated fields:
 
   1. the literal word `chromi`,
   2. an identifier (which must match the regexp `/^\d+$/`),
-  3. the path to a Chrome Javascript function  (such as `chrome.windows.getAll`), and
+  3. the path to a Chrome JavaScript function  (such as `chrome.windows.getAll`), and
   4. a URI encoded, JSON stringified list of arguments.
 
 The extension calls the indicated function with the given arguments and
 responds with a message of the form:
 
   1. the literal word `Chromi` (note the capital "C", this time),
-  2. the identifier provided with the original resquest,
+  2. the identifier provided with the original request,
   3. the literal word `done` (or `error`, in the event of failure), and
   4. a URI encoded, JSON stringified list of results from the function's invocation.
 
 Chromi is a work in progress: so that's the extent of the documentation for the
-moment. Except for the folowing examples, ...
+moment. Except for the following examples, ...
 
 ### Examples
 
@@ -143,12 +143,12 @@ dependencies include, but may not be limited to:
   - [Node.js](http://nodejs.org/)
   
     (Install with your favourite package manager, perhaps something like `sudo apt-get install node`.)
-  - [Coffeescript](http://coffeescript.org/)
+  - [CoffeeScript](http://coffeescript.org/)
   
     (Install with something like `npm install coffee-script`.)
 
 To build Chromi, run `cake build` in the project's root folder.  This compiles
-the CoffeeScript source to Javascript.
+the CoffeeScript source to JavaScript.
 
 `cake` is installed by `npm` as part of the `coffee-script` package.  Depending
 on how the install is handled, you may have to search for where `npm` has
