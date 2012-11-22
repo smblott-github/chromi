@@ -25,8 +25,9 @@ validId   = (id) -> id and idRegExp.test id
 
 class Respond
   constructor: (sock) -> @sock = sock
-  done: (id, msg) -> @send "done",  id, msg
-  info: (id, msg) -> @send "info",  id, msg
+
+  done:  (id, msg) -> @send "done",  id, msg
+  info:  (id, msg) -> @send "info",  id, msg
   error: (id, msg) -> @send "error", id, msg
 
   send: (type, id, msg) ->
@@ -34,40 +35,45 @@ class Respond
     if @send
       @sock.send [ chromiCap, id, "#{type}" ].concat(msg).map(encodeURIComponent).join " "
     else
-      echo "#{me}: sending without a socket?"
+      echo "#{chromi} error: sending without a socket?"
 
 # #####################################################################
-# Handler.
+# Request handler.
 
-handler = (respond, id, msg) ->
-  if msg.length == 1 # and msg[0] == "[]"
-    # Ping.
+requestHandler = (respond, id, msg) ->
+  # Ping?
+  if msg.length == 1 and msg[0] == "[]"
     return respond.done id, [ JSON.stringify [ true ] ]
+  
+  # Looks like a valid request?
   if msg.length isnt 2
-    # Invalid request.
     return respond.error id, "invalid request:".split(/\s/).concat msg
+
+  # Parse.
   [ method, json ] = msg
   if not method
     return respond.error id, "no method:".split(/\s/).concat msg
-  # Locate function.
-  # Follow path from `window`.
+ 
+  # Locate function: follow path from `window`.
   self = func = window
   for term in method.split "."
     self = func
     func = func?[term] if term
+
   # Do we have a function?
   if not func
     return respond.error id, "could not find function".split(/\s/).concat [method]
+
   # Parse JSON/argument.
   try
     args = JSON.parse json
   catch error
     return respond.error id, "JSON parse".split(/\s/).concat [json]
-  # Call function.
+
+  # Add callback and call function.
   try
     # Add callback.
     args.push (stuff...) -> respond.done id, [ JSON.stringify stuff ]
-    # Call function.
     func.apply self, args
   catch error
     error = JSON.stringify error
@@ -105,7 +111,7 @@ class WebsocketWrapper
       (event) =>
         msg = event.data.split(/\s+/).filter((c) -> c).map decodeURIComponent
         [ signal, id ] = msg.splice(0,2)
-        return handler @respond, id, msg if signal == chromi and validId id
+        return requestHandler @respond, id, msg if signal == chromi and validId id
 
     # Handlers: Errors/close.
     @sock.onerror = => @sock.close()

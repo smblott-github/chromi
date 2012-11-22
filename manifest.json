@@ -1,9 +1,9 @@
 
 {
   "name": "Chromi",
-  "version": "1.0",
+  "version": "1.0.1",
   "manifest_version": 2,
-  "description": "An external interface to chrome.",
+  "description": "Facilitate command-line and scripted access to chrome's extension API.",
 
   "permissions": [
     "tabs",
