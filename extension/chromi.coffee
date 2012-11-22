@@ -83,27 +83,38 @@ class WebsocketWrapper
 
   constructor: ->
     echo "#{chromiCap} starting #{++serverCount}"
-    return unless "WebSocket" of window
-    return unless @sock = new WebSocket "ws://#{config.host}:#{config.port}/"
-    # Initialisation.
-    @sock.onopen = =>
-      echo "       connected"
-      @respond = new Respond @sock
-      @respond.info "", [ "connect" ]
-      @interval = setInterval ( => @respond.info "", [ "heartbeat", ++@count ] ), config.beat
-    # Message handling.
-    @sock.onmessage = (event) =>
-      msg = event.data.split(/\s+/).filter((c) -> c).map decodeURIComponent
-      [ signal, id ] = msg.splice(0,2)
-      return handler @respond, id, msg if signal == chromi and validId id
-    # Error/close handling.
+
+    unless "WebSocket" of window
+      echo "WebSocket not available: exiting"
+      return
+    
+    unless @sock = new WebSocket "ws://#{config.host}:#{config.port}/"
+      echo "Could not create WebSocket: exiting"
+      return
+
+    # Handler: Open.
+    @sock.onopen =
+      =>
+        echo "       connected"
+        @respond = new Respond @sock
+        @respond.info "", [ "connected" ]
+        @interval = setInterval ( => @respond.info "", [ "heartbeat", ++@count ] ), config.beat
+
+    # Handler: Message.
+    @sock.onmessage =
+      (event) =>
+        msg = event.data.split(/\s+/).filter((c) -> c).map decodeURIComponent
+        [ signal, id ] = msg.splice(0,2)
+        return handler @respond, id, msg if signal == chromi and validId id
+
+    # Handlers: Errors/close.
     @sock.onerror = => @sock.close()
     @sock.onclose = => @close()
 
   # Clean up and, after a brief interval, attempt to reconnect.
   close: ->
     clearInterval @interval if @interval
-    [ "interval", "respond", "sock" ].forEach (f) => delete @[f]
+    [ "interval", "respond", "sock" ].forEach (attribute) => delete @[attribute]
     setTimeout ( -> ws = new WebsocketWrapper() ), config.beat
 
 # #####################################################################
