@@ -12,8 +12,10 @@ exclude +='*/README*'
 exclude +='*/Cakefile'
 exclude +='*/Makefile'
 
+zipfile = ../chromi.zip
+
 zip:
-	[ -f ../chromi.zip ] && rm -v ../chromi.zip && true
+	-rm -v $(zipfile)
 	cd .. && zip -r chromi chromi -x $(exclude)
-	unzip -l ../chromi.zip
+	unzip -l $(zipfile)
 
