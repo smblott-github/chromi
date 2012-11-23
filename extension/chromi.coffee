@@ -38,21 +38,20 @@ class Respond
       echo "#{chromi} error: sending without a socket?"
 
 # #####################################################################
+# Ping handler.
+
+window.ping = (callback) -> callback "pong"
+
+# #####################################################################
 # Request handler.
 
 requestHandler = (respond, id, msg) ->
-  # Ping?
-  if msg.length == 1 and msg[0] == "[]"
-    return respond.done id, [ JSON.stringify [ true ] ]
-  
   # Looks like a valid request?
-  if msg.length isnt 2
+  unless msg.length == 2 and msg[0] and msg[1]
     return respond.error id, "invalid request:".split(/\s/).concat msg
 
   # Parse.
   [ method, json ] = msg
-  if not method
-    return respond.error id, "no method:".split(/\s/).concat msg
  
   # Locate function: follow path from `window`.
   self = func = window
@@ -61,7 +60,7 @@ requestHandler = (respond, id, msg) ->
     func = func?[term] if term
 
   # Do we have a function?
-  if not func
+  unless func and typeof(func) is "function"
     return respond.error id, "could not find function".split(/\s/).concat [method]
 
   # Parse JSON/argument.
@@ -109,7 +108,7 @@ class WebsocketWrapper
     # Handler: Message.
     @sock.onmessage =
       (event) =>
-        msg = event.data.split(/\s+/).filter((c) -> c).map decodeURIComponent
+        msg = event.data.split(/\s+/).map decodeURIComponent
         [ signal, id ] = msg.splice(0,2)
         return requestHandler @respond, id, msg if signal == chromi and validId id
 
