@@ -1,7 +1,7 @@
 
 {
   "name": "Chromi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "manifest_version": 2,
   "description": "Facilitate command-line and scripted access to chrome's extension API.",
 
