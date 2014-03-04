@@ -38,6 +38,14 @@ access to that socket may gain unintended access to Chrome's extension APIs.
 The Chromi extension is now available on the [Chrome Web
 Store](https://chrome.google.com/webstore/detail/chromi/eeaebnaemaijhbdpnmfbdboenoomadbo).
 
+### New! (4/3/2012)
+
+There's nothing new!  This is just a quick note to say...
+
+Despite there having been no updates recently, this project is very much alive.
+The hard work is all done in `chromix`, outside of the extension itself.  So
+there has been little (well, almost no) need to update the extension itself.
+
 Details
 -------
 
